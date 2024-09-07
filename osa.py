@@ -7,29 +7,24 @@ class Student:
     Represents a student with a name, email, and a list of absences.
     
     Attributes:
-        name (str): The name of the student.
-        email (str): The email of the student.
-        absences (list): A list of absences, where each absence is represented as a dictionary with 'date' and 'reason' keys.
+        name : The name of the student.
+        email : The email of the student.
+        absences : A list of absences, where each absence is represented as a dictionary with 'date' and 'reason'.
     """
     def __init__(self, name, email):
-        """
-        Initializes a new Student instance with a name and email.
+        # Initializes a new Student instance with a name and email.
         
-        Args:
-            name (str): The name of the student.
-            email (str): The email of the student.
-        """
         self.name = name
         self.email = email
-        self.absences = []  # List to store date and reason dictionaries
+        self.absences = []  # List to store date and reason
 
     def add_absence(self, date_absent, reason):
         """
         Adds an absence record for the student.
         
         Args:
-            date_absent (str): The date of the absence in 'YYYY-MM-DD' format.
-            reason (str): The reason for the absence.
+            date_absent : The date of the absence in 'YYYY-MM-DD' format.
+            reason : The reason for the absence.
         """
         self.absences.append({'date': date_absent, 'reason': reason})
 
@@ -39,15 +34,11 @@ class OSASlip:
     Handles the logic for determining whether a student should be issued an OSA slip.
     
     Attributes:
-        student (Student): The student for whom the slip is being determined.
+        student : The student for whom the slip is being determined.
     """
     def __init__(self, student):
-        """
-        Initializes a new OSASlip instance for a specific student.
-        
-        Args:
-            student (Student): The student for whom the slip logic will be applied.
-        """
+        # Initializes a new OSASlip instance for a specific student.
+ 
         self.student = student
 
     def determine_slip(self, reason):
@@ -55,7 +46,7 @@ class OSASlip:
         Determines if a slip should be issued based on the reason for absence.
         
         Args:
-            reason (str): The reason for the absence.
+            reason: The reason for the absence.
         
         Returns:
             bool: True if a slip should be issued, False if the student should go directly to the OSA office.
@@ -64,9 +55,9 @@ class OSASlip:
         excusable_reasons = ['medical issue', 'family emergency', 'university event']
         # If the reason is in the list of excusable reasons, no slip is needed
         if reason.lower() in excusable_reasons:
-            return False  # No slip needed, direct to OSA office
+            return False
         else:
-            return True  # Slip needed
+            return True
 
 # Class handling the main OSA system logic
 class OSASystem:
@@ -74,16 +65,12 @@ class OSASystem:
     The main system for managing OSA slips for students.
     
     Attributes:
-        students (list): A list of Student objects currently in the system.
-        json_file (str): The path to the JSON file where student data is stored.
+        students : A list of Student objects currently in the system.
+        json_file : The path to the JSON file where student data is stored.
     """
     def __init__(self, json_file='osa_slips.json'):
-        """
-        Initializes the OSA system, loading existing student data if available.
-        
-        Args:
-            json_file (str): The filename where student data is stored. Defaults to 'osa_slips.json'.
-        """
+        # Initializes the OSA system, loading existing student data if available.
+
         self.students = []  # Initialize an empty list to hold student data
         self.json_file = json_file  # JSON file for saving and loading data
 
@@ -99,10 +86,10 @@ class OSASystem:
         Otherwise, creates a new student entry.
         
         Args:
-            name (str): The name of the student.
-            email (str): The email of the student.
-            date_absent (str): The date of the absence in 'YYYY-MM-DD' format.
-            reason (str): The reason for the absence.
+            name : The name of the student.
+            email : The email of the student.
+            date_absent : The date of the absence in 'YYYY-MM-DD' format.
+            reason : The reason for the absence.
         """
         # Check if student already exists
         for student in self.students:
@@ -119,17 +106,15 @@ class OSASystem:
         self.save_data()
 
     def save_data(self):
-        """
-        Saves the current student data to the JSON file.
-        """
+        # Saves the current student data to the JSON file.
+
         with open(self.json_file, 'w') as file:
             # Convert student objects to dictionaries for JSON serialization
             json.dump([student.__dict__ for student in self.students], file, indent=4)
 
     def load_data(self):
-        """
-        Loads student data from the JSON file into the system.
-        """
+        #Loads student data from the JSON file into the system.
+
         with open(self.json_file, 'r') as file:
             student_data = json.load(file)
             # Reconstruct Student objects from the loaded data
@@ -143,7 +128,7 @@ class OSASystem:
         Processes the student's absences and determines whether a slip is needed.
         
         Args:
-            student (Student): The student whose absences are being processed.
+            student: The student whose absences are being processed.
         """
         slip = OSASlip(student)
         # Check each absence to determine if a slip is needed
@@ -154,9 +139,8 @@ class OSASystem:
                 print(f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']}.")
 
     def run(self):
-        """
-        Runs the main loop of the OSA system, allowing for continuous processing of students.
-        """
+        # Runs the main loop of the OSA system, allowing for continuous processing of students.
+
         while True:
             print("Automated OSA Slip Distribution")
             name = input("Enter your name: ")
