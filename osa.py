@@ -106,22 +106,34 @@ class OSASystem:
         self.save_data()
 
     def save_data(self):
-        # Saves the current student data to the JSON file.
-
-        with open(self.json_file, 'w') as file:
-            # Convert student objects to dictionaries for JSON serialization
-            json.dump([student.__dict__ for student in self.students], file, indent=4)
+        """
+        Saves the current student data to the JSON file.
+        
+        Uses try-except to handle potential file I/O errors.
+        """
+        try:
+            with open(self.json_file, 'w') as file:
+                # Convert student objects to dictionaries for JSON serialization
+                json.dump([student.__dict__ for student in self.students], file, indent=4)
+        except IOError as e:
+            print(f"An error occurred while saving data: {e}")
 
     def load_data(self):
-        #Loads student data from the JSON file into the system.
-
-        with open(self.json_file, 'r') as file:
-            student_data = json.load(file)
-            # Reconstruct Student objects from the loaded data
-            for student in student_data:
-                loaded_student = Student(student['name'], student['email'])
-                loaded_student.absences = student['absences']
-                self.students.append(loaded_student)
+        """
+        Loads student data from the JSON file into the system.
+        
+        Uses try-except to handle potential file I/O errors.
+        """
+        try:
+            with open(self.json_file, 'r') as file:
+                student_data = json.load(file)
+                # Reconstruct Student objects from the loaded data
+                for student in student_data:
+                    loaded_student = Student(student['name'], student['email'])
+                    loaded_student.absences = student['absences']
+                    self.students.append(loaded_student)
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"An error occurred while loading data: {e}")
 
     def process_student(self, student):
         """
@@ -140,7 +152,7 @@ class OSASystem:
 
     def run(self):
         # Runs the main loop of the OSA system, allowing for continuous processing of students.
-
+        
         while True:
             print("Automated OSA Slip Distribution")
             name = input("Enter your name: ")
