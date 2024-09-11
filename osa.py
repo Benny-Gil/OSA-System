@@ -117,6 +117,8 @@ class OSASystem:
                 json.dump([student.__dict__ for student in self.students], file, indent=4)
         except IOError as e:
             print(f"An error occurred while saving data: {e}")
+        except:
+            print("Another error has occurred.")
 
     def load_data(self):
         """
@@ -134,6 +136,8 @@ class OSASystem:
                     self.students.append(loaded_student)
         except (IOError, json.JSONDecodeError) as e:
             print(f"An error occurred while loading data: {e}")
+        except:
+            print("Another error has occurred.")
 
     def process_student(self, student):
         """
