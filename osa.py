@@ -9,24 +9,25 @@ class Student:
     Attributes:
         name : The name of the student.
         email : The email of the student.
-        absences : A list of absences, where each absence is represented as a dictionary with 'date' and 'reason'.
+        absences : A list of absences, where each absence is represented as a dictionary with 'date', 'reason', and 'course'.
     """
     def __init__(self, name, email):
         # Initializes a new Student instance with a name and email.
         
         self.name = name
         self.email = email
-        self.absences = []  # List to store date and reason
+        self.absences = []  # List to store date, reason, and course information
 
-    def add_absence(self, date_absent, reason):
+    def add_absence(self, date_absent, reason, course_code):
         """
         Adds an absence record for the student.
         
         Args:
             date_absent : The date of the absence in 'YYYY-MM-DD' format.
             reason : The reason for the absence.
+            course_code : The course code for the absence.
         """
-        self.absences.append({'date': date_absent, 'reason': reason})
+        self.absences.append({'date': date_absent, 'reason': reason, 'course': course_code})
 
 # Class handling OSA slip logic
 class OSASlip:
@@ -78,7 +79,7 @@ class OSASystem:
         if os.path.exists(self.json_file):
             self.load_data()
 
-    def add_student(self, name, email, date_absent, reason):
+    def add_student(self, name, email, date_absent, reason, course_code):
         """
         Adds a student to the system or updates an existing student's record.
         
@@ -90,54 +91,39 @@ class OSASystem:
             email : The email of the student.
             date_absent : The date of the absence in 'YYYY-MM-DD' format.
             reason : The reason for the absence.
+            course_code : The course code for the absence.
         """
         # Check if student already exists
         for student in self.students:
             if student.email == email:
                 print(f"Student with email {email} already exists. Adding new absence record.")
-                student.add_absence(date_absent, reason)
+                student.add_absence(date_absent, reason, course_code)
                 self.save_data()
                 return
         
         # If student does not exist, create a new student
         student = Student(name, email)
-        student.add_absence(date_absent, reason)
+        student.add_absence(date_absent, reason, course_code)
         self.students.append(student)
         self.save_data()
 
     def save_data(self):
-        """
-        Saves the current student data to the JSON file.
-        
-        Uses try-except to handle potential file I/O errors.
-        """
-        try:
-            with open(self.json_file, 'w') as file:
-                # Convert student objects to dictionaries for JSON serialization
-                json.dump([student.__dict__ for student in self.students], file, indent=4)
-        except IOError as e:
-            print(f"An error occurred while saving data: {e}")
-        except:
-            print("Another error has occurred.")
+        # Saves the current student data to the JSON file.
+
+        with open(self.json_file, 'w') as file:
+            # Convert student objects to dictionaries for JSON serialization
+            json.dump([student.__dict__ for student in self.students], file, indent=4)
 
     def load_data(self):
-        """
-        Loads student data from the JSON file into the system.
-        
-        Uses try-except to handle potential file I/O errors.
-        """
-        try:
-            with open(self.json_file, 'r') as file:
-                student_data = json.load(file)
-                # Reconstruct Student objects from the loaded data
-                for student in student_data:
-                    loaded_student = Student(student['name'], student['email'])
-                    loaded_student.absences = student['absences']
-                    self.students.append(loaded_student)
-        except (IOError, json.JSONDecodeError) as e:
-            print(f"An error occurred while loading data: {e}")
-        except:
-            print("Another error has occurred.")
+        # Loads student data from the JSON file into the system.
+
+        with open(self.json_file, 'r') as file:
+            student_data = json.load(file)
+            # Reconstruct Student objects from the loaded data
+            for student in student_data:
+                loaded_student = Student(student['name'], student['email'])
+                loaded_student.absences = student['absences']
+                self.students.append(loaded_student)
 
     def process_student(self, student):
         """
@@ -150,13 +136,18 @@ class OSASystem:
         # Check each absence to determine if a slip is needed
         for absence in student.absences:
             if slip.determine_slip(absence['reason']):
-                print(f"{student.name}, you will be issued an OSA slip for your late/absence on {absence['date']}.")
+                print(f"{student.name}, you will be issued an OSA slip for your late/absence on {absence['date']} in course {absence['course']}.")
             else:
-                print(f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']}.")
+                print(f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']} in course {absence['course']}.")
 
     def run(self):
         # Runs the main loop of the OSA system, allowing for continuous processing of students.
-        
+
+        course_codes = {
+            "9372A": "CS 311", "9375B": "CS 311L", "9373A": "CS 312", "9373B": "CS 312L", "9374": "CS 313",
+            "9375": "CS 314", "9376": "CS 315", "9377": "CSM 316", "9378": "CFE 105A"
+        }
+
         while True:
             print("Automated OSA Slip Distribution")
             name = input("Enter your name: ")
@@ -164,8 +155,17 @@ class OSASystem:
             date_absent = input("Enter the date of late/absence (YYYY-MM-DD): ")
             reason = input("Enter the reason for your late/absence: ")
 
+            print("\nSelect the course code for the absence (e.g., 9372A):")
+            for code, course in course_codes.items():
+                print(f"{code}: {course}")
+            course_code = input("Enter the course code: ").strip().upper()
+
+            if course_code not in course_codes:
+                print("Invalid course code. Please try again.") # Can add 'raise' to throw exception, but it stops program :(
+                continue
+
             # Add or update the student's record
-            self.add_student(name, email, date_absent, reason)
+            self.add_student(name, email, date_absent, reason, course_code)
             
             # Process the student to check if they need a slip for the most recent absence
             for student in self.students:
