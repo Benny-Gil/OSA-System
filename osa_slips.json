@@ -1,0 +1,13 @@
+[
+    {
+        "name": "Benny",
+        "email": "2233116@slu.edu.ph",
+        "absences": [
+            {
+                "date": "2024-11-28",
+                "reason": "Sickeness",
+                "course": "9377"
+            }
+        ]
+    }
+]
