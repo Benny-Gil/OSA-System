@@ -65,7 +65,7 @@ osa_system = OSASystem()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('student.html')
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
@@ -85,6 +85,10 @@ def add_student():
             results = osa_system.process_student(student)
             return jsonify(results)
     return jsonify({"error": "Student not found"}), 404
+
+@app.route('/osaform')
+def osaform():
+    return render_template('osaform.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

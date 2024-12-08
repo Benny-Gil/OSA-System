@@ -19,6 +19,7 @@
         <label for="course">Course Code or Name:</label>
         <input type="text" id="course" name="course" required><br>
         <button type="button" onclick="submitForm()">Submit</button>
+        <button type="button" onclick="goBack()">Go Back</button>
     </form>
     <div id="results"></div>
     <script>
@@ -53,6 +54,10 @@
                     });
                 }
             });
+        }
+
+        function goBack() {
+            location.href = '/';
         }
     </script>
 </body>
