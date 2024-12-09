@@ -1,0 +1,12 @@
+[
+    {
+        "email": "2233692@slu.edu.ph",
+        "password": "aaron",
+        "usertype": "admin"
+    },
+    {
+        "email": "2233116@slu.edu.ph",
+        "password": "benny",
+        "usertype": "student"
+    }
+]

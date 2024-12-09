@@ -1,8 +1,15 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import json
 import os
 
 app = Flask(__name__)
+app.secret_key = 'secret_key'
+
+class User:
+    def __init__(self, email, password, usertype):
+        self.email = email
+        self.password = password
+        self.usertype = usertype
 
 class Student:
     def __init__(self, name, email):
@@ -22,11 +29,15 @@ class OSASlip:
         return reason.lower() not in excusable_reasons
 
 class OSASystem:
-    def __init__(self, json_file='osa_slips.json'):
+    def __init__(self, users_file='users.json', json_file='osa_slips.json'):
         self.students = []
+        self.users = []
         self.json_file = json_file
+        self.users_file = users_file
         if os.path.exists(self.json_file):
             self.load_data()
+        if os.path.exists(self.users_file):
+            self.load_users()
 
     def add_student(self, name, email, date_absent, reason, course):
         for student in self.students:
@@ -51,6 +62,18 @@ class OSASystem:
                 loaded_student.absences = student['absences']
                 self.students.append(loaded_student)
 
+    def load_users(self):
+        with open(self.users_file, 'r') as file:
+            user_data = json.load(file)
+            for user in user_data:
+                self.users.append(User(user['email'], user['password'], user['usertype']))
+
+    def validate_user(self, email, password):
+        for user in self.users:
+            if user.email == email and user.password == password:
+                return user
+        return None
+
     def process_student(self, student):
         slip = OSASlip(student)
         results = []
@@ -63,9 +86,38 @@ class OSASystem:
 
 osa_system = OSASystem()
 
+# Routes
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    user = osa_system.validate_user(email, password)
+    if user:
+        session['email'] = user.email
+        session['usertype'] = user.usertype
+        if user.usertype == 'admin':
+            return jsonify({'redirect': '/admin'})
+        elif user.usertype == 'student':
+            return jsonify({'redirect': '/student'})
+    return jsonify({'error': 'Invalid email or password'}), 401
+
+@app.route('/admin')
+def admin():
+    if 'usertype' in session and session['usertype'] == 'admin':
+        return render_template('admin.html')
+    return redirect(url_for('index'))
+
+@app.route('/student')
+def student():
+    if 'usertype' in session and session['usertype'] == 'student':
+        return render_template('student.html')
+    return redirect(url_for('index'))
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
