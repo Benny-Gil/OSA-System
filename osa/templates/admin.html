@@ -1,0 +1,49 @@
+<!-- templates/admin_absences.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Absences</title>
+    <link rel="stylesheet" href="static/css/admin.css">
+    <script src="static/js/admin.js"></script>
+</head>
+<body>
+<h1>Absences</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Student Name</th>
+        <th>Email</th>
+        <th>Date Absent</th>
+        <th>Reason</th>
+        <th>Course</th>
+        <th>Status</th>
+        <th>Admin Reason</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+    {% for absence in student.absences %}
+    <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ absence.date }}</td>
+        <td>{{ absence.reason }}</td>
+        <td>{{ absence.course }}</td>
+        <td>{{ absence.status }}</td>
+        <td>{{ absence.admin_reason }}</td>
+        <td>
+            {% if absence.status == 'Pending' %}
+            <button class="approve" onclick="approveAbsence('{{ student.email }}', '{{ absence.date }}')">Approve
+            </button>
+            <button class="deny" onclick="denyAbsence('{{ student.email }}', '{{ absence.date }}')">Deny</button>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
