@@ -23,9 +23,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install flake8
+          flake8 --version  # Check if flake8 is properly installed
+
+      - name: Check Python version and installed packages
+        run: |
+          python --version
+          pip list
 
       - name: Run flake8
-        run: flake8 .
+        run: python -m flake8 .
 
       - name: Run tests
         run: pytest
