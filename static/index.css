@@ -16,11 +16,12 @@ h1 {
 }
 
 form {
-    background: #fff;
+    background: #ffffff;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 300px;
+    text-align: center;
 }
 
 label {
@@ -29,25 +30,25 @@ label {
     color: #555;
 }
 
-input[type="text"],
 input[type="email"],
-input[type="date"] {
+input[type="password"] {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dfe1e5;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 button {
     background-color: #5cb85c;
     color: white;
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     width: 100%;
-    margin: 8px;
+    font-size: 16px;
 }
 
 button:hover {
@@ -56,4 +57,6 @@ button:hover {
 
 #results {
     margin-top: 20px;
+    color: #d93025;
+    font-weight: bold;
 }
