@@ -121,22 +121,23 @@ def student():
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
-    data = request.json
-    required_fields = ['name', 'email', 'date_absent', 'reason', 'course']
-    if not all(field in data for field in required_fields):
-        return jsonify({"error": "Missing required fields"}), 400
+    if 'usertype' in session and session['usertype'] == 'student':
+        data = request.json
+        required_fields = ['date_absent', 'reason', 'course']
+        if not all(field in data for field in required_fields):
+            return jsonify({"error": "Missing required fields"}), 400
 
-    name = data['name']
-    email = data['email']
-    date_absent = data['date_absent']
-    reason = data['reason']
-    course = data['course']
-    osa_system.add_student(name, email, date_absent, reason, course)
-    for student in osa_system.students:
-        if student.email == email:
+        email = session['email']
+        student = next((s for s in osa_system.students if s.email == email), None)
+        if student:
+            name = student.name
+            date_absent = data['date_absent']
+            reason = data['reason']
+            course = data['course']
+            osa_system.add_student(name, email, date_absent, reason, course)
             results = osa_system.process_student(student)
             return jsonify(results)
-    return jsonify({"error": "Student not found"}), 404
+    return jsonify({"error": "Unauthorized"}), 401
 
 @app.route('/osaform')
 def osaform():
