@@ -89,7 +89,7 @@ osa_system = OSASystem()
 # Routes
 @app.route('/')
 def index():
-    return render_template('student.html')
+    return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -141,6 +141,21 @@ def add_student():
 @app.route('/osaform')
 def osaform():
     return render_template('osaform.html')
+
+@app.route('/history')
+def history():
+    if 'usertype' in session and session['usertype'] == 'student':
+        return render_template('history.html')
+    return redirect(url_for('index'))
+
+@app.route('/api/absences')
+def api_absences():
+    if 'usertype' in session and session['usertype'] == 'student':
+        email = session['email']
+        student = next((s for s in osa_system.students if s.email == email), None)
+        if student:
+            return jsonify(student.absences)
+    return jsonify([]), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
