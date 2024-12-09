@@ -7,13 +7,15 @@
                 "date": "2024-11-28",
                 "reason": "Sickeness",
                 "course": "9377",
-                "status": "Pending"
+                "status": "Approved",
+                "admin_reason": "take rest"
             },
             {
                 "date": "",
                 "reason": "test",
                 "course": "test",
-                "status": "Pending"
+                "status": "Approved",
+                "admin_reason": ""
             },
             {
                 "date": "",

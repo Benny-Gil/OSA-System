@@ -27,8 +27,44 @@ def login():
 @app.route('/admin')
 def admin():
     if 'usertype' in session and session['usertype'] == 'admin':
-        return render_template('admin.html')
+        return render_template('admin.html', students=osa_system.students)
     return redirect(url_for('index'))
+
+@app.route('/admin/approve_absence', methods=['POST'])
+def approve_absence():
+    if 'usertype' in session and session['usertype'] == 'admin':
+        data = request.json
+        email = data.get('email')
+        date_absent = data.get('date_absent')
+        admin_reason = data.get('admin_reason', '')
+
+        student = next((s for s in osa_system.students if s.email == email), None)
+        if student:
+            for absence in student.absences:
+                if absence['date'] == date_absent:
+                    absence['status'] = 'Approved'
+                    absence['admin_reason'] = admin_reason
+                    osa_system.save_data()
+                    return jsonify({'success': True})
+    return jsonify({'error': 'Unauthorized'}), 401
+
+@app.route('/admin/deny_absence', methods=['POST'])
+def deny_absence():
+    if 'usertype' in session and session['usertype'] == 'admin':
+        data = request.json
+        email = data.get('email')
+        date_absent = data.get('date_absent')
+        admin_reason = data.get('admin_reason', '')
+
+        student = next((s for s in osa_system.students if s.email == email), None)
+        if student:
+            for absence in student.absences:
+                if absence['date'] == date_absent:
+                    absence['status'] = 'Denied'
+                    absence['admin_reason'] = admin_reason
+                    osa_system.save_data()
+                    return jsonify({'success': True})
+    return jsonify({'error': 'Unauthorized'}), 401
 
 @app.route('/student')
 def student():
