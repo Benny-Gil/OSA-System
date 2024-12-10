@@ -53,7 +53,6 @@ class OSASystem:
                 return user
         return None
 
-
     def process_student(self, student):
         slip = OSASlip(student)
         results = []
