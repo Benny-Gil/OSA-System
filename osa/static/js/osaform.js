@@ -1,4 +1,15 @@
 function submitForm() {
+    const dateAbsent = document.getElementById('date_absent').value;
+    const reason = document.getElementById('reason').value;
+    const course = document.getElementById('course').value;
+    
+    // Check if any field is empty
+    if (!dateAbsent || !reason || !course) {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.style.display = 'block';
+        return;
+    }
+
     const formData = {
         date_absent: document.getElementById('date_absent').value,
         reason: document.getElementById('reason').value,
