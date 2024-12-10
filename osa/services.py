@@ -65,7 +65,10 @@ class OSASystem:
                 )
             else:
                 results.append(
-                    f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']} in {absence['course']}.")
+                    f"{student.name}, please go directly "
+                    f"to the OSA office with supporting documents "
+                    f"for the date {absence['date']} "
+                    f"in {absence['course']}.")
         return results
 
 
