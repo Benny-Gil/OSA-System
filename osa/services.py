@@ -59,8 +59,8 @@ class OSASystem:
         for absence in student.absences:
             if slip.determine_slip(absence['reason']):
                 results.append(
-                    f"{student.name}, you will be issued an OSA slip for your late/absence "
-                    f"on {absence['date']} in {absence['course']}."
+                    f"{student.name}, you will be issued an OSA slip for your "
+                    f"late/absence on {absence['date']} in {absence['course']}."
                 )
             else:
                 results.append(
