@@ -48,7 +48,7 @@ def approve_absence():
         date_absent = data.get('date_absent')
         admin_reason = data.get('admin_reason', '')
 
-        student = next((s for s in osa_system.students 
+        student = next((s for s in osa_system.students
                         if s.email == email), None)
         if student:
             for absence in student.absences:
@@ -68,7 +68,7 @@ def deny_absence():
         date_absent = data.get('date_absent')
         admin_reason = data.get('admin_reason', '')
 
-        student = next((s for s in osa_system.students 
+        student = next((s for s in osa_system.students
                         if s.email == email), None)
         if student:
             for absence in student.absences:
@@ -96,7 +96,7 @@ def add_student():
             return jsonify({"error": "Missing required fields"}), 400
 
         email = session['email']
-        student = next((s for s in osa_system.students 
+        student = next((s for s in osa_system.students
                         if s.email == email), None)
         if student:
             name = student.name
@@ -125,7 +125,8 @@ def history():
 def api_absences():
     if 'usertype' in session and session['usertype'] == 'student':
         email = session['email']
-        student = next((s for s in osa_system.students if s.email == email), None)
+        student = next((s for s in osa_system.students
+                        if s.email == email), None)
         if student:
             return jsonify(student.absences)
     return jsonify([]), 404
