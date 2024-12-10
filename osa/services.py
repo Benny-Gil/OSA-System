@@ -53,15 +53,14 @@ class OSASystem:
                 return user
         return None
 
+
     def process_student(self, student):
         slip = OSASlip(student)
         results = []
         for absence in student.absences:
             if slip.determine_slip(absence['reason']):
                 results.append(
-                    f"{student.name}, \
-                        you will be issued an OSA slip for your late/absence on 
-                    {absence['date']} in {absence['course']}.")
+                    f"{student.name}, you will be issued an OSA slip for your late/absence on {absence['date']} in {absence['course']}.")
             else:
                 results.append(
                     f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']} in {absence['course']}.")
