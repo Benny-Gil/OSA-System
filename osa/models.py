@@ -23,6 +23,6 @@ class OSASlip:
         self.student = student
 
     def determine_slip(self, reason):
-        excusable_reasons = ['medical issue', 
+        excusable_reasons = ['medical issue',
                              'family emergency', 'university event']
         return reason.lower() not in excusable_reasons
