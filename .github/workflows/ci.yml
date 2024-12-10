@@ -45,5 +45,5 @@ jobs:
             # Publish the package to PyPI using the API token
             twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
         env:
-            TWINE_USERNAME: _token_
+            TWINE_USERNAME: __token__
             TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
