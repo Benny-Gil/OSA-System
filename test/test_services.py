@@ -8,7 +8,8 @@ from osa.services import OSASystem
 class TestOSASystem(unittest.TestCase):
 
     def setUp(self):
-        self.osa_system = OSASystem(users_file='test_users.json', json_file='test_osa_slips.json')
+        self.osa_system = OSASystem(users_file='test_users.json',
+                                    json_file='test_osa_slips.json')
         self.osa_system.students = []
         self.osa_system.users = []
 
@@ -19,14 +20,16 @@ class TestOSASystem(unittest.TestCase):
             os.remove('test_osa_slips.json')
 
     def test_add_student(self):
-        self.osa_system.add_student('John Doe', 'john@example.com', '2023-10-01', 'Sick', 'Math')
+        self.osa_system.add_student('John Doe', 'john@example.com',
+                                    '2023-10-01', 'Sick', 'Math')
         self.assertEqual(len(self.osa_system.students), 1)
         self.assertEqual(self.osa_system.students[0].name, 'John Doe')
         self.assertEqual(self.osa_system.students[0].email, 'john@example.com')
         self.assertEqual(len(self.osa_system.students[0].absences), 1)
 
     def test_save_and_load_data(self):
-        self.osa_system.add_student('John Doe', 'john@example.com', '2023-10-01', 'Sick', 'Math')
+        self.osa_system.add_student('John Doe', 'john@example.com',
+                                    '2023-10-01', 'Sick', 'Math')
         self.osa_system.save_data()
         self.osa_system.students = []
         self.osa_system.load_data()
@@ -36,7 +39,8 @@ class TestOSASystem(unittest.TestCase):
     def test_validate_user(self):
         user = User('admin@example.com', 'password', 'admin')
         self.osa_system.users.append(user)
-        validated_user = self.osa_system.validate_user('admin@example.com', 'password')
+        validated_user = self.osa_system.validate_user('admin@example.com',
+                                                       'password')
         self.assertIsNotNone(validated_user)
         self.assertEqual(validated_user.email, 'admin@example.com')
 
