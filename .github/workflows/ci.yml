@@ -24,6 +24,7 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
           pip install flake8
+          pip install wheel
           flake8 --version  # Check if flake8 is properly installed
 
       - name: Check Python version and installed packages
