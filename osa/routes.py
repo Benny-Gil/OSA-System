@@ -11,10 +11,15 @@ app = Flask(__name__)
 app.secret_key = 'secret_key'
 
 @app.route('/')
+
+
 def index():
     return render_template('index.html')
 
+
 @app.route('/login', methods=['POST'])
+
+
 def login():
     data = request.json
     email = data.get('email')
@@ -30,13 +35,19 @@ def login():
             return jsonify({'redirect': '/student'})
     return jsonify({'error': 'Invalid email or password'}), 401
 
+
 @app.route('/admin')
+
+
 def admin():
     if 'usertype' in session and session['usertype'] == 'admin':
         return render_template('admin.html', students=osa_system.students)
     return redirect(url_for('index'))
 
+
 @app.route('/admin/approve_absence', methods=['POST'])
+
+
 def approve_absence():
     if 'usertype' in session and session['usertype'] == 'admin':
         data = request.json
@@ -54,7 +65,10 @@ def approve_absence():
                     return jsonify({'success': True})
     return jsonify({'error': 'Unauthorized'}), 401
 
+
 @app.route('/admin/deny_absence', methods=['POST'])
+
+
 def deny_absence():
     if 'usertype' in session and session['usertype'] == 'admin':
         data = request.json
@@ -72,13 +86,19 @@ def deny_absence():
                     return jsonify({'success': True})
     return jsonify({'error': 'Unauthorized'}), 401
 
+
 @app.route('/student')
+
+
 def student():
     if 'usertype' in session and session['usertype'] == 'student':
         return render_template('student.html')
     return redirect(url_for('index'))
 
+
 @app.route('/add_student', methods=['POST'])
+
+
 def add_student():
     if 'usertype' in session and session['usertype'] == 'student':
         data = request.json
@@ -98,17 +118,26 @@ def add_student():
             return jsonify(results)
     return jsonify({"error": "Unauthorized"}), 401
 
+
 @app.route('/osaform')
+
+
 def osaform():
     return render_template('osaform.html')
 
+
 @app.route('/history')
+
+
 def history():
     if 'usertype' in session and session['usertype'] == 'student':
         return render_template('history.html')
     return redirect(url_for('index'))
 
+
 @app.route('/api/absences')
+
+
 def api_absences():
     if 'usertype' in session and session['usertype'] == 'student':
         email = session['email']
