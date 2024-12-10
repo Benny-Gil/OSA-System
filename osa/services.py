@@ -53,6 +53,7 @@ class OSASystem:
                 return user
         return None
 
+
 def process_student(self, student):
     slip = OSASlip(student)
     results = []
@@ -64,8 +65,8 @@ def process_student(self, student):
             )
         else:
             results.append(
-                f"{student.name}, please go directly to the OSA office with supporting documents for the date "
-                f"{absence['date']} in {absence['course']}."
+                f"{student.name}, please go directly to the OSA office with supporting "
+                f"documents for the date {absence['date']} in {absence['course']}."
             )
     return results
 
