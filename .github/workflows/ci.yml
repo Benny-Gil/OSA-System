@@ -36,3 +36,14 @@ jobs:
 
       - name: Run tests
         run: pytest
+
+      - name: Build and Publish Artifact
+        run: |
+          python setup.py sdist bdist_wheel  # Build the package
+          # Authenticate with GitHub Package registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          # Publish the package to GitHub Packages (replace 'your-package-name' with the actual name)
+          twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+        env:
+          TWINE_USERNAME: ${{ github.actor }}
+          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
