@@ -20,11 +20,9 @@ function submitForm() {
                 p.textContent = data.error;
                 resultsDiv.appendChild(p);
             } else {
-                data.forEach(result => {
-                    const p = document.createElement('p');
-                    p.textContent = result;
-                    resultsDiv.appendChild(p);
-                });
+                const p = document.createElement('p');
+                p.textContent = data[data.length - 1];
+                resultsDiv.appendChild(p);
             }
         });
 }
