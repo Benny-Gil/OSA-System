@@ -60,3 +60,8 @@ button:hover {
 #results {
     margin-top: 20px;
 }
+
+#error-message {
+    color: red;
+    display: none;
+}
