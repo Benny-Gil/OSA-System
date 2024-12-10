@@ -17,8 +17,6 @@ def index():
 
 
 @app.route('/login', methods=['POST'])
-
-
 def login():
     data = request.json
     email = data.get('email')
@@ -36,8 +34,6 @@ def login():
 
 
 @app.route('/admin')
-
-
 def admin():
     if 'usertype' in session and session['usertype'] == 'admin':
         return render_template('admin.html', students=osa_system.students)
@@ -45,8 +41,6 @@ def admin():
 
 
 @app.route('/admin/approve_absence', methods=['POST'])
-
-
 def approve_absence():
     if 'usertype' in session and session['usertype'] == 'admin':
         data = request.json
@@ -66,8 +60,6 @@ def approve_absence():
 
 
 @app.route('/admin/deny_absence', methods=['POST'])
-
-
 def deny_absence():
     if 'usertype' in session and session['usertype'] == 'admin':
         data = request.json
@@ -87,8 +79,6 @@ def deny_absence():
 
 
 @app.route('/student')
-
-
 def student():
     if 'usertype' in session and session['usertype'] == 'student':
         return render_template('student.html')
@@ -96,8 +86,6 @@ def student():
 
 
 @app.route('/add_student', methods=['POST'])
-
-
 def add_student():
     if 'usertype' in session and session['usertype'] == 'student':
         data = request.json
@@ -119,15 +107,11 @@ def add_student():
 
 
 @app.route('/osaform')
-
-
 def osaform():
     return render_template('osaform.html')
 
 
 @app.route('/history')
-
-
 def history():
     if 'usertype' in session and session['usertype'] == 'student':
         return render_template('history.html')
@@ -135,8 +119,6 @@ def history():
 
 
 @app.route('/api/absences')
-
-
 def api_absences():
     if 'usertype' in session and session['usertype'] == 'student':
         email = session['email']
