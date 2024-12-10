@@ -10,8 +10,8 @@ from osa.services import osa_system
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
-@app.route('/')
 
+@app.route('/')
 
 def index():
     return render_template('index.html')
