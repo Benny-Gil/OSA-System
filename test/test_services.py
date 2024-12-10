@@ -2,12 +2,11 @@ import os
 import sys
 import unittest
 
-from osa.models import Student, User
-from osa.services import OSASystem
-
-
 sys.path.insert(0, os.path.abspath(os.path.join(
     os.path.dirname(__file__), '..')))
+
+from osa.models import Student, User
+from osa.services import OSASystem
 
 
 class TestOSASystem(unittest.TestCase):
