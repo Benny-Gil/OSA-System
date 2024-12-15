@@ -5,7 +5,8 @@ from osa.models import Student, OSASlip, User
 
 
 class OSASystem:
-    def __init__(self, users_file='data/users.json', json_file='data/osa_slips.json'):
+    def __init__(self, users_file='data/users.json',
+                 json_file='data/osa_slips.json'):
         self.students = []
         self.users = []
         self.json_file = json_file
@@ -28,7 +29,8 @@ class OSASystem:
 
     def save_data(self):
         with open(self.json_file, 'w') as file:
-            json.dump([student.__dict__ for student in self.students], file, indent=4)
+            json.dump([student.__dict__ for student
+                       in self.students], file, indent=4)
 
     def load_data(self):
         with open(self.json_file, 'r') as file:
@@ -42,7 +44,8 @@ class OSASystem:
         with open(self.users_file, 'r') as file:
             user_data = json.load(file)
             for user in user_data:
-                self.users.append(User(user['email'], user['password'], user['usertype']))
+                self.users.append(User(user['email'],
+                                       user['password'], user['usertype']))
 
     def validate_user(self, email, password):
         for user in self.users:
@@ -56,10 +59,16 @@ class OSASystem:
         for absence in student.absences:
             if slip.determine_slip(absence['reason']):
                 results.append(
-                    f"{student.name}, you will be issued an OSA slip for your late/absence on {absence['date']} in {absence['course']}.")
+                    f"{student.name}, you will be issued an OSA slip for your "
+                    f"late/absence on {absence['date']} "
+                    f"in {absence['course']}."
+                )
             else:
                 results.append(
-                    f"{student.name}, please go directly to the OSA office with supporting documents for the date {absence['date']} in {absence['course']}.")
+                    f"{student.name}, please go directly "
+                    f"to the OSA office with supporting documents "
+                    f"for the date {absence['date']} "
+                    f"in {absence['course']}.")
         return results
 
 

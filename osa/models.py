@@ -11,9 +11,11 @@ class Student:
         self.email = email
         self.absences = []
 
-    def add_absence(self, date_absent, reason, course, status='Pending', admin_reason=''):
+    def add_absence(self, date_absent, reason,
+                    course, status='Pending', admin_reason=''):
         self.absences.append(
-            {'date': date_absent, 'reason': reason, 'course': course, 'status': status, 'admin_reason': admin_reason})
+            {'date': date_absent, 'reason': reason, 'course': course,
+             'status': status, 'admin_reason': admin_reason})
 
 
 class OSASlip:
@@ -21,5 +23,6 @@ class OSASlip:
         self.student = student
 
     def determine_slip(self, reason):
-        excusable_reasons = ['medical issue', 'family emergency', 'university event']
+        excusable_reasons = ['medical issue',
+                             'family emergency', 'university event']
         return reason.lower() not in excusable_reasons
