@@ -39,11 +39,11 @@ jobs:
       - name: Run tests
         run: pytest
 
-      - name: Build and Publish Artifact
-        run: |
-            python setup.py sdist bdist_wheel  # Build the package
-            # Publish the package to PyPI using the API token
-            twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
-        env:
-            TWINE_USERNAME: __token__
-            TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      # - name: Build and Publish Artifact
+      #   run: |
+      #       python setup.py sdist bdist_wheel  # Build the package
+      #       # Publish the package to PyPI using the API token
+      #       twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+      #   env:
+      #       TWINE_USERNAME: __token__
+      #       TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
